@@ -1,4 +1,4 @@
-from utilities import split_list, clean_word, clean_words, remove_duplicates
+from utilities import split_list, clean_word, clean_words, remove_duplicates, autocorrect_spelling_mistakes
 
 class TestUtilities():
 
@@ -59,4 +59,29 @@ class TestUtilities():
         new_result = clean_words(result)
         clean_and_without_duplicates = remove_duplicates(new_result)
         assert clean_and_without_duplicates == ["", "hello", "world", "special", "tester", "cat", "act", "rldow", "olleh"]
+
+    def test_autocorrect_spelling_mistakes_no_changes_needed(self):
+        original = ["hello", "world"]
+        result = autocorrect_spelling_mistakes(original)
+        assert result ==  ["hello", "world"]
+
+    def test_autocorrect_spelling_mistakes_simple_fixes(self):
+        original = ["helo", "helllo", "worlf"]
+        result = autocorrect_spelling_mistakes(original)
+        assert result ==  ["help", "hello", "world"]
+
+    def test_autocorrect_spelling_mistakes_removes_when_no_fix(self):
+        original = ["helSKWo", "poiuytr", "w0rld"]
+        result = autocorrect_spelling_mistakes(original)
+        assert result ==  ["world"]
+
+    def test_autocorrect_spelling_mistakes_removes_non_en_word(self):
+        original = ["gracias", "cumpleaños", "w0rld"]
+        result = autocorrect_spelling_mistakes(original)
+        assert result ==  ["gracious", "world"]
+
+    def test_autocorrect_spelling_mistakes_replaces_symbols(self):
+        original = ["wor!d"]
+        result = autocorrect_spelling_mistakes(original)
+        assert result ==  ["world"]
 

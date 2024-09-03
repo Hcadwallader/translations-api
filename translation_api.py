@@ -10,7 +10,7 @@ def call_translation_api(target_language, full_list):
     chunked_lists = split_list(full_list, MAX_WORDS_IN_SINGLE_REQUEST)
     translations = []
     for chunk in chunked_lists:
-        translations.append(__call_translation_with_limited_list(target_language, chunk))
+        translations.extend(__call_translation_with_limited_list(target_language, chunk))
     return translations
 
 
