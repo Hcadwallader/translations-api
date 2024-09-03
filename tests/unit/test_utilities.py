@@ -1,4 +1,4 @@
-from utilities import split_list, clean_word, clean_words
+from utilities import split_list, clean_word, clean_words, remove_duplicates
 
 class TestUtilities():
 
@@ -16,7 +16,6 @@ class TestUtilities():
         my_list = [1,2,3]
         result = split_list(my_list, 5)
         assert result == [[1, 2, 3]]
-
 
     def test_clean_word_nothing_dirty(self):
         original = "anagram"
@@ -43,8 +42,21 @@ class TestUtilities():
         result = clean_word(original)
         assert result == ""
 
-
     def test_clean_words(self):
         original = ["", "hello", "world!", "special999", "1tes2ter3", "c@t"]
         result = clean_words(original)
         assert result == ["", "hello", "world", "special", "tester", "ct"]
+
+    def test_remove_duplicates(self):
+        original = ["", "hello", "world", "special", "tester", "cat", "act", "cat", "rldow", "world", "olleh", "hello"]
+        result = remove_duplicates(original)
+        assert result == ["", "hello", "world", "special", "tester", "cat", "act", "rldow", "olleh"]
+
+    def test_remove_duplicates_after_clean(self):
+        original = ["", "hello?!", "world!", "special", "tester", "cat", "act", "cat", "rldow", "world", "olleh", "hello"]
+        result = remove_duplicates(original)
+        assert result == ["", "hello?!", "world!", "special", "tester", "cat", "act", "rldow", "world", "olleh", "hello"]
+        new_result = clean_words(result)
+        clean_and_without_duplicates = remove_duplicates(new_result)
+        assert clean_and_without_duplicates == ["", "hello", "world", "special", "tester", "cat", "act", "rldow", "olleh"]
+
